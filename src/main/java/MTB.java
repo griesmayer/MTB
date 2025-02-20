@@ -18,6 +18,16 @@ public class MTB
         setKm(-1);
     }
 
+    public int[] getHohe()
+    {
+        return hohe;
+    }
+
+    public void setHohe(int[] hohe)
+    {
+        this.hohe = hohe;
+    }
+
     public int getKm()
     {
         return km;
@@ -116,6 +126,67 @@ public class MTB
         return -999;
     }
 
+    public void remove(int pos)
+    {
+        if ((pos>=0) && (pos<=km))
+        {
+            for (int i = pos + 1; i <= km; i++)
+            {
+                hohe[i - 1] = hohe[i];
+            }
+            hohe[km] = 0;
+            km--;
+        }
+        else
+        {
+            System.out.println("Fehler: ungültige Position!");
+        }
+    }
+
+    public void aufschutten()
+    {
+        for (int i=0; i<=km; i++)
+        {
+            hohe[i] = hohe[i]+10;
+        }
+    }
+
+    public void insert(int value, int pos)
+    {
+        if (km < hohe.length-1)
+        {
+            if ((pos >= 0) && (pos <= km))
+            {
+                for (int i = km; i >= pos; i--)
+                {
+                    hohe[i + 1] = hohe[i];
+                }
+                hohe[pos] = value;
+                km++;
+            }
+            else
+            {
+                System.out.println("Fehler: ungultige Position!");
+            }
+        }
+        else
+        {
+            System.out.println("Fehler: die max. Streckenlange ist bereits erreicht!");
+        }
+    }
+
+    public int anzTal()
+    {
+        int anz;
+
+        anz = 0;
+        for (int i=1; i<km; i++)
+        {
+            if ((hohe[i-1] >= hohe[i]) && (hohe[i+1] >= hohe[i]))
+                anz++;
+        }
+        return anz;
+    }
 
     public int maxSteigung()
     {
@@ -145,6 +216,75 @@ public class MTB
             }
         }
         return max;
+    }
+
+    public void sortBubble()
+    {
+        int h;
+
+        h = 0;
+        for (int j=0; j<km; j++)
+        {
+            for (int i=0; i<km-j; i++)
+            {
+                if (hohe[i] > hohe[i + 1])
+                {
+                    h = hohe[i + 1];
+                    hohe[i + 1] = hohe[i];
+                    hohe[i] = h;
+                }
+            }
+        }
+    }
+
+    public void sortBubble2()
+    {
+        int h;
+        int j;
+        boolean sorted;
+
+        h = 0;
+        j = 0;
+        sorted = false;
+        while (sorted == false)
+        {
+            sorted = true;
+            for (int i=0; i<km-j; i++)
+            {
+                if (hohe[i] > hohe[i + 1])
+                {
+                    sorted = false;
+                    h = hohe[i + 1];
+                    hohe[i + 1] = hohe[i];
+                    hohe[i] = h;
+                }
+            }
+            j++;
+        }
+    }
+
+    public void selectionSort()
+    {
+        int max;
+        int pos;
+        int h;
+
+        for (int j=0; j<=km-1; j++)
+        {
+            max = -999;
+            pos = -1;
+            for (int i = 0; i <= km - j; i++)
+            {
+                if (hohe[i] > max)
+                {
+                    max = hohe[i];
+                    pos = i;
+                }
+            }
+            h = hohe[km-j];
+            hohe[km-j] = max;
+            hohe[pos] = h;
+        }
     }
 
     public String toString()
